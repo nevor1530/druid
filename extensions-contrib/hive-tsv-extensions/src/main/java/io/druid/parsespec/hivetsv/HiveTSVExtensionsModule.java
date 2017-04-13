@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.inject.Binder;
+import com.metamx.common.logger.Logger;
 import io.druid.initialization.DruidModule;
 
 import java.util.Arrays;
@@ -32,11 +33,13 @@ import java.util.List;
  * Created by nevor on 11/04/2017.
  */
 public class HiveTSVExtensionsModule implements DruidModule {
+    static Logger log = new Logger(HiveTSVExtensionsModule.class);
     public List<? extends Module> getJacksonModules() {
+        log.info("load HiveTSVExtensionsModule");
         return Arrays.asList(
                 new SimpleModule("HiveTSVExtensionsModule")
                         .registerSubtypes(
-                                new NamedType(HiveTSVParseSpec.class, "hive-tsv")
+                                new NamedType(HiveTSVParseSpec.class, "hive_tsv")
                         )
         );
     }

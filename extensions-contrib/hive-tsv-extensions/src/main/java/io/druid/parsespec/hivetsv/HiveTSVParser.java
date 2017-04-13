@@ -26,12 +26,12 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import io.druid.java.util.common.collect.Utils;
-import io.druid.java.util.common.logger.Logger;
-import io.druid.java.util.common.parsers.ParseException;
-import io.druid.java.util.common.parsers.Parser;
-import io.druid.java.util.common.parsers.ParserUtils;
-import io.druid.java.util.common.parsers.Parsers;
+import com.metamx.common.collect.Utils;
+import com.metamx.common.logger.Logger;
+import com.metamx.common.parsers.ParseException;
+import com.metamx.common.parsers.Parser;
+import com.metamx.common.parsers.ParserUtils;
+import com.metamx.common.parsers.Parsers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +138,7 @@ public class HiveTSVParser implements Parser<String, Object> {
 
     @Override
     public Map<String, Object> parse(final String input) {
+        log.info("parse: {}", input);
         try {
             Iterable<String> values = splitter.split(input);
 

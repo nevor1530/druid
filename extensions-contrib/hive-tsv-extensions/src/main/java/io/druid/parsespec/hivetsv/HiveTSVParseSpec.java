@@ -21,16 +21,18 @@ package io.druid.parsespec.hivetsv;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Optional;
+import com.metamx.common.logger.Logger;
+import com.metamx.common.parsers.Parser;
 import io.druid.data.input.impl.DelimitedParseSpec;
 import io.druid.data.input.impl.DimensionsSpec;
 import io.druid.data.input.impl.TimestampSpec;
-import io.druid.java.util.common.parsers.Parser;
 
 import java.util.List;
 
 /**
  */
 public class HiveTSVParseSpec extends DelimitedParseSpec {
+    static Logger log = new Logger(HiveTSVParseSpec.class);
 
     public HiveTSVParseSpec(@JsonProperty("timestampSpec") TimestampSpec timestampSpec, @JsonProperty("dimensionsSpec") DimensionsSpec dimensionsSpec, @JsonProperty("delimiter") String delimiter, @JsonProperty("listDelimiter") String listDelimiter, @JsonProperty("columns") List<String> columns) {
         super(timestampSpec, dimensionsSpec, delimiter, listDelimiter, columns);
@@ -38,6 +40,7 @@ public class HiveTSVParseSpec extends DelimitedParseSpec {
 
     @Override
     public Parser<String, Object> makeParser() {
+        log.info("make parser");
         Parser<String, Object> retVal = new HiveTSVParser(
                 Optional.fromNullable(getDelimiter()),
                 Optional.fromNullable(getListDelimiter())

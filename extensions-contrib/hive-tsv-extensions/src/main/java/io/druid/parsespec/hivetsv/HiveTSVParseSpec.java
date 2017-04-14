@@ -46,6 +46,7 @@ public class HiveTSVParseSpec extends DelimitedParseSpec {
                 Optional.fromNullable(getListDelimiter())
         );
         retVal.setFieldNames(getColumns());
+        log.info("after making parser");
         return retVal;
     }
 }

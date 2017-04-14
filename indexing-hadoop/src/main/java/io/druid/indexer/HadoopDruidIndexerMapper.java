@@ -66,10 +66,13 @@ public abstract class HadoopDruidIndexerMapper<KEYOUT, VALUEOUT> extends Mapper<
       Object key, Object value, Context context
   ) throws IOException, InterruptedException
   {
+    log.info("start map");
     try {
       final InputRow inputRow;
       try {
+        log.info("before parserInputRow");
         inputRow = parseInputRow(value, parser);
+        log.info("after parserInputRow");
       }
       catch (ParseException e) {
         if (reportParseExceptions) {

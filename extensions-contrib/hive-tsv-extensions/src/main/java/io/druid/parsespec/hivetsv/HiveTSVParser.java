@@ -54,7 +54,6 @@ public class HiveTSVParser implements Parser<String, Object> {
     public static final Function<String, String> nullEmptyStringFunction = new Function<String, String>() {
         @Override
         public String apply(String input) {
-            log.warn("Parse input: " + input);
             if (input == null || input.isEmpty() || input.equals("\\N")) {
                 return null;
             }
@@ -138,7 +137,6 @@ public class HiveTSVParser implements Parser<String, Object> {
 
     @Override
     public Map<String, Object> parse(final String input) {
-        log.warn("parse: " + input);
         try {
             Iterable<String> values = splitter.split(input);
 

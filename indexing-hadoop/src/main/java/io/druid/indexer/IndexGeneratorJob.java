@@ -62,7 +62,6 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
-import org.apache.hadoop.mapred.InputFormat;
 import org.apache.hadoop.mapred.InvalidJobConfException;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Job;
@@ -163,6 +162,7 @@ public class IndexGeneratorJob implements Jobby
       );
 
       job.getConfiguration().set("io.sort.record.percent", "0.23");
+
       JobHelper.injectSystemProperties(job);
       config.addJobProperties(job);
 

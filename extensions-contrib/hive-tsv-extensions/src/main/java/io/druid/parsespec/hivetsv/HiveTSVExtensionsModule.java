@@ -35,7 +35,6 @@ import java.util.List;
 public class HiveTSVExtensionsModule implements DruidModule {
     static Logger log = new Logger(HiveTSVExtensionsModule.class);
     public List<? extends Module> getJacksonModules() {
-        log.info("load HiveTSVExtensionsModule");
         return Arrays.asList(
                 new SimpleModule("HiveTSVExtensionsModule")
                         .registerSubtypes(

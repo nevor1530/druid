@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.druid</groupId>
         <artifactId>druid</artifactId>
-        <version>0.9.0-rc3</version>
+        <version>0.9.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -16,6 +16,7 @@
             <groupId>io.druid</groupId>
             <artifactId>druid-api</artifactId>
             <scope>provided</scope>
+            <version>0.9.2</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -24,11 +25,6 @@
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.druid.extensions</groupId>
-            <artifactId>druid-namespace-lookup</artifactId>
-            <version>0.9.0-rc3</version>
         </dependency>
         <dependency>
             <groupId>com.metamx</groupId>

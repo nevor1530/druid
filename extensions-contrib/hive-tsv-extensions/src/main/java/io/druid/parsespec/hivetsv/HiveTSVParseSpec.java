@@ -25,10 +25,12 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.metamx.common.logger.Logger;
 import com.metamx.common.parsers.Parser;
+import io.druid.data.input.impl.DimensionSchema;
 import io.druid.data.input.impl.DimensionsSpec;
 import io.druid.data.input.impl.ParseSpec;
 import io.druid.data.input.impl.TimestampSpec;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,7 +61,12 @@ public class HiveTSVParseSpec extends ParseSpec {
             Preconditions.checkArgument(!column.contains(","), "Column[%s] has a comma, it cannot", column);
         }
 
-        verify(dimensionsSpec.getDimensions());
+        List<DimensionSchema> dimensionSchemas = dimensionsSpec.getDimensions();
+        List<String> dimensionNames = new ArrayList<>();
+        for (DimensionSchema d: dimensionSchemas) {
+            dimensionNames.add(d.getName());
+        }
+        verify(dimensionNames);
     }
 
     @JsonProperty("delimiter")

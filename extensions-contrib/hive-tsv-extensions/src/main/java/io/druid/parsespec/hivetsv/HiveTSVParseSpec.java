@@ -61,12 +61,7 @@ public class HiveTSVParseSpec extends ParseSpec {
             Preconditions.checkArgument(!column.contains(","), "Column[%s] has a comma, it cannot", column);
         }
 
-        List<DimensionSchema> dimensionSchemas = dimensionsSpec.getDimensions();
-        List<String> dimensionNames = new ArrayList<>();
-        for (DimensionSchema d: dimensionSchemas) {
-            dimensionNames.add(d.getName());
-        }
-        verify(dimensionNames);
+        verify(dimensionsSpec.getDimensionNames());
     }
 
     @JsonProperty("delimiter")

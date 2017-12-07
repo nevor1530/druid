@@ -1,5 +1,7 @@
 package org.apache.parquet.json;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Sets;
 import io.druid.data.input.impl.*;
@@ -88,6 +90,14 @@ public class JsonParquetReadSupport extends ReadSupport<ObjectNode> {
         Map<String, Object> fieldTree = paseToTree(requiredPaths);
 
         List<Type> partialFields = fetchRequriedTypes(fullSchema, fieldTree);
+        if (partialFields.size() == 0) {
+            try {
+                String fieldTreeJson = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(fieldTree);
+                throw new RuntimeException("Partial schema is empty:\n" + fieldTreeJson);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Partial schema is empty.");
+            }
+        }
 
         return new MessageType(name, partialFields);
     }
@@ -95,12 +105,18 @@ public class JsonParquetReadSupport extends ReadSupport<ObjectNode> {
     private List<Type> fetchRequriedTypes(GroupType schema, Map<String, Object> fieldTree) {
         List<Type> types = new LinkedList<>();
         for(Map.Entry<String, Object> entry: fieldTree.entrySet()) {
+            // 新 schema 读老 schema 时会遇到未知的字段，忽略之
+            if (!schema.containsField(entry.getKey())) {
+                continue;
+            }
             Type subType = schema.getType(entry.getKey());
             if (entry.getValue() == null) {
                 types.add(subType);
             } else {
                 List<Type> subTypes = fetchRequriedTypes(subType.asGroupType(), (Map)entry.getValue());
-                types.add(subType.asGroupType().withNewFields(subTypes));
+                if (subTypes.size() > 0) {
+                    types.add(subType.asGroupType().withNewFields(subTypes));
+                }
             }
         }
         return types;

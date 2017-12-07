@@ -34,6 +34,16 @@ public class ParquetJsonInputTest {
         assertEquals(1131, data.get("entry").size());
     }
 
+    @Test
+    public void testNewerSchema() throws IOException, InterruptedException {
+        HadoopDruidIndexerConfig config = HadoopDruidIndexerConfig.fromFile(new File("example/newer_schema_config.json"));
+        Job job = Job.getInstance(new Configuration());
+        config.intoConfiguration(job);
+        ObjectNode data = getFirstRecord(job, "example/zalog.snappy.parquet");
+        int i = 1;
+        assertEquals(false, data.get("detail").get("view").get("is_intent").asBoolean());
+    }
+
     private ObjectNode getFirstRecord(Job job, String parquetPath) throws IOException, InterruptedException {
         File testFile = new File(parquetPath);
         Path path = new Path(testFile.getAbsoluteFile().toURI());

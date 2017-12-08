@@ -29,7 +29,7 @@ public class JsonParquetReadSupport extends ReadSupport<ObjectNode> {
      * @param config
      * @return
      */
-    private Set<String> fetchRequriedPaths(HadoopDruidIndexerConfig config) {
+    public Set<String> fetchRequriedPaths(HadoopDruidIndexerConfig config) {
         Set<String> requiredPaths = new HashSet<>();
         // timestamp column
         String tsField = config.getParser().getParseSpec().getTimestampSpec().getTimestampColumn();
@@ -53,13 +53,14 @@ public class JsonParquetReadSupport extends ReadSupport<ObjectNode> {
         }
         JSONPathSpec jsonPathSpec = ((JSONParseSpec) parseSpec).getFlattenSpec();
         for (JSONPathFieldSpec field: jsonPathSpec.getFields()) {
-            if (field.getType() != JSONPathFieldType.PATH) {
-                continue;
+            if (field.getType() == JSONPathFieldType.PATH) {
+                // 从集合中去掉别名
+                requiredPaths.remove(field.getName());
+                String pureName = extractPureName(field.getExpr());
+                requiredPaths.add(pureName);
+            } else if (field.getType() == JSONPathFieldType.ROOT) {
+                requiredPaths.add(field.getName());
             }
-            // 从集合中去掉别名
-            requiredPaths.remove(field.getName());
-            String pureName = extractPureName(field.getExpr());
-            requiredPaths.add(pureName);
         }
         return requiredPaths;
     }

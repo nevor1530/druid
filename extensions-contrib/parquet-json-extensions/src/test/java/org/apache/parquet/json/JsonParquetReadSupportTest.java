@@ -1,8 +1,10 @@
 package org.apache.parquet.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.druid.indexer.HadoopDruidIndexerConfig;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -47,5 +49,13 @@ public class JsonParquetReadSupportTest {
         assertEquals(false, map.containsKey("b"));
         assertEquals(true, ((Map)map.get("a")).containsKey("b"));
         assertEquals(true, ((Map)((Map)map.get("a")).get("b")).containsKey("d"));
+    }
+
+    @Test
+    public void fetchRequriedPaths() {
+        HadoopDruidIndexerConfig config = HadoopDruidIndexerConfig.fromFile(new File("example/newer_schema_config.json"));
+        JsonParquetReadSupport support = new JsonParquetReadSupport();
+        Set set = support.fetchRequriedPaths(config);
+        assertEquals(196, set.size());
     }
 }

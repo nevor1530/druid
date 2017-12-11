@@ -32,8 +32,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class ParquetJsonInputRowParser implements InputRowParser<ObjectNode> {
-  static Logger logger = LoggerFactory.getLogger(ParquetJsonInputRowParser.class);
+public class Json2StringInputRowParser implements InputRowParser<ObjectNode> {
+  static Logger logger = LoggerFactory.getLogger(Json2StringInputRowParser.class);
   private final ParseSpec parseSpec;
   private final boolean binaryAsString;
   private final List<String> dimensions;
@@ -41,7 +41,7 @@ public class ParquetJsonInputRowParser implements InputRowParser<ObjectNode> {
   private final StringInputRowParser stringInputRowParser;
 
   @JsonCreator
-  public ParquetJsonInputRowParser(
+  public Json2StringInputRowParser(
       @JsonProperty("parseSpec") ParseSpec parseSpec,
       @JsonProperty("binaryAsString") Boolean binaryAsString
   )
@@ -74,6 +74,6 @@ public class ParquetJsonInputRowParser implements InputRowParser<ObjectNode> {
 
   public InputRowParser withParseSpec(ParseSpec parseSpec)
   {
-    return new ParquetJsonInputRowParser(parseSpec, binaryAsString);
+    return new Json2StringInputRowParser(parseSpec, binaryAsString);
   }
 }

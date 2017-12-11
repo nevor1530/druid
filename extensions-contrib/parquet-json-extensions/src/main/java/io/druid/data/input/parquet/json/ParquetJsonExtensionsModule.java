@@ -14,9 +14,9 @@ public class ParquetJsonExtensionsModule implements DruidModule {
     @Override
     public List<? extends Module> getJacksonModules() {
         return Arrays.asList(
-                new SimpleModule("ParuqetJsonInputRowParserModule")
+                new SimpleModule("Json2StringInputRowParserModule")
                         .registerSubtypes(
-                                new NamedType(ParquetJsonInputRowParser.class, "parquet_json_string")
+                                new NamedType(Json2StringInputRowParser.class, "json_2_string")
                         )
         );
     }

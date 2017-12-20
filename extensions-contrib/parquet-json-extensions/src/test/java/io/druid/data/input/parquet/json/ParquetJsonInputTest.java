@@ -12,6 +12,8 @@ import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 import org.apache.hadoop.mapreduce.task.TaskAttemptContextImpl;
 import org.apache.hadoop.util.ReflectionUtils;
 import static org.junit.Assert.assertEquals;
+
+import org.apache.parquet.json.JsonParquetReadSupport;
 import org.junit.Test;
 
 import java.io.File;
@@ -22,9 +24,11 @@ import java.io.IOException;
  */
 public class ParquetJsonInputTest {
     @Test
-    public void test() throws IOException, InterruptedException {
+    public void testSchema() throws IOException, InterruptedException {
         HadoopDruidIndexerConfig config = HadoopDruidIndexerConfig.fromFile(new File("example/ingestion_config.json"));
-        Job job = Job.getInstance(new Configuration());
+        Configuration conf = new Configuration();
+        conf.setBoolean(JsonParquetReadSupport.FETCH_PRIMITIVE_FIELDS, true);
+        Job job = Job.getInstance(conf);
         config.intoConfiguration(job);
         ObjectNode data = getFirstRecord(job, "example/-r-00368.snappy.parquet");
         assertEquals(1494222853161L, data.get("start_timestamp").asLong());
@@ -32,6 +36,9 @@ public class ParquetJsonInputTest {
         assertEquals(false, data.get("is_bounce").asBoolean());
         assertEquals("Zhihu", data.get("client").get("product").asText());
         assertEquals(1131, data.get("entry").size());
+        // assert auto fetch primitive fields
+        assertEquals(1494227189788L, data.get("end_timestamp").asLong());
+        assertEquals(4336627, data.get("duration").asInt());
     }
 
     @Test

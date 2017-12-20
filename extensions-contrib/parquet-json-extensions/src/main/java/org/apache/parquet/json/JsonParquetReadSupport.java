@@ -21,6 +21,11 @@ import java.util.regex.Pattern;
 public class JsonParquetReadSupport extends ReadSupport<ObjectNode> {
     public static final Pattern JSON_PATH_REGEX = Pattern.compile("^\\$(\\.\\w+(?:\\[.*?\\])?)+$");
 
+    /*
+    * indicate whether auto fetch all primitive fields， boolean type with default false
+    */
+    public static final String FETCH_PRIMITIVE_FIELDS = "parquet.json.fetch_primitive_fields";
+
     /**
      * 从 aggregators, timestamp column, dimension schema 里取出「所需字段」集合，
      * 然后从这个集合里去掉 JsonParseSpec.flatternSpec.fields.name 里包含的
@@ -81,14 +86,22 @@ public class JsonParquetReadSupport extends ReadSupport<ObjectNode> {
 
     private MessageType getPartialReadSchema(InitContext context)
     {
+        boolean fetchPrimitive = context.getConfiguration().getBoolean(FETCH_PRIMITIVE_FIELDS, false);
+
         MessageType fullSchema = context.getFileSchema();
 
         String name = fullSchema.getName();
 
         HadoopDruidIndexerConfig config = HadoopDruidIndexerConfig.fromConfiguration(context.getConfiguration());
         Set<String> requiredPaths = fetchRequriedPaths(config);
-        // TODO 解析成树状
+        // 解析成树状
         Map<String, Object> fieldTree = paseToTree(requiredPaths);
+
+        // TODO 如果设置了 fetch_primitive_field 需要验证 json 字段别名不会跟其它 primitive 字段名字冲突
+        // 同时把剩余的 primitive 字段加入
+        if (fetchPrimitive) {
+            addPrimitiveFields(fullSchema, fieldTree, config);
+        }
 
         List<Type> partialFields = fetchRequriedTypes(fullSchema, fieldTree);
         if (partialFields.size() == 0) {
@@ -101,6 +114,31 @@ public class JsonParquetReadSupport extends ReadSupport<ObjectNode> {
         }
 
         return new MessageType(name, partialFields);
+    }
+
+    /**
+     *
+     * @param fullSchema
+     * @param fieldTree
+     * @param config
+     */
+    private void addPrimitiveFields(MessageType fullSchema, Map<String, Object> fieldTree, HadoopDruidIndexerConfig config) {
+        Set<String> aliasSet = new HashSet<>();
+        JSONPathSpec jsonPathSpec = ((JSONParseSpec) config.getParser().getParseSpec()).getFlattenSpec();
+        for (JSONPathFieldSpec field: jsonPathSpec.getFields()) {
+            aliasSet.add(field.getName());
+        }
+
+        for (Type type: fullSchema.getFields()) {
+            if (type.isPrimitive()) {
+                // 判断是否有别名冲突
+                if (aliasSet.contains(type.getName()) && !fieldTree.containsKey(type.getName())) {
+                    throw new RuntimeException(String.format("Column '%s' is conflict with other primitive field", type.getName()));
+                } else {
+                    fieldTree.put(type.getName(), null);
+                }
+            }
+        }
     }
 
     private List<Type> fetchRequriedTypes(GroupType schema, Map<String, Object> fieldTree) {

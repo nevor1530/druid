@@ -1,0 +1,1146 @@
+{
+  "hadoopDependencyCoordinates": [
+    "org.apache.hadoop:hadoop-client:2.3.0"
+  ],
+  "spec": {
+    "dataSchema": {
+      "dataSource": "etl_data_zhihu_entry",
+      "granularitySpec": {
+        "intervals": [
+          "2017-05-18/2017-05-20"
+        ],
+        "queryGranularity": "hour",
+        "segmentGranularity": "hour",
+        "type": "uniform"
+      },
+      "metricsSpec": [
+        {
+          "fieldName": "extra.personalized_push_log.suc_member_count",
+          "name": "extra.personalized_push_log.suc_member_count",
+          "type": "longSum"
+        },
+        {
+          "fieldName": "extra.personalized_push_log.suc_device_count",
+          "name": "extra.personalized_push_log.suc_device_count",
+          "type": "longSum"
+        },
+        {
+          "fieldName": "extra.personalized_push_log.push_delay_time",
+          "name": "extra.personalized_push_log.push_delay_time",
+          "type": "longSum"
+        },
+        {
+          "fieldName": "extra.personalized_push_log.push_delay_time",
+          "name": "extra.personalized_push_log.push_delay_time_min",
+          "type": "longMin"
+        },
+        {
+          "fieldName": "extra.personalized_push_log.push_delay_time",
+          "name": "extra.personalized_push_log.push_delay_time_max",
+          "type": "longMax"
+        },
+        {
+          "fieldName": "extra.play.video_bitrate",
+          "name": "extra.play.video_bitrate",
+          "type": "longSum"
+        },
+        {
+          "fieldName": "extra.play.video_bytes",
+          "name": "extra.play.video_bytes",
+          "type": "longSum"
+        },
+        {
+          "fieldName": "extra.play.upload_time",
+          "name": "extra.play.upload_time",
+          "type": "longSum"
+        },
+        {
+          "fieldName": "extra.play.transcode_time",
+          "name": "extra.play.transcode_time",
+          "type": "longSum"
+        },
+        {
+          "fieldName": "extra.play.video_load_time",
+          "name": "extra.play.video_load_time",
+          "type": "longSum"
+        },
+        {
+          "name": "count",
+          "type": "count"
+        }
+      ],
+      "parser": {
+        "parseSpec": {
+          "dimensionsSpec": {
+            "dimensionExclusions": [
+            ],
+            "dimensions": [
+            ],
+            "spatialDimensions": [
+            ]
+          },
+          "flattenSpec": {
+            "fields": [
+              "log_version",
+              "log_type",
+              {
+                "expr": "$.base.id.client_id",
+                "name": "base.id.client_id",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.id.is_client_id_day_new",
+                "name": "base.id.is_client_id_day_new",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.id.is_client_id_hour_new",
+                "name": "base.id.is_client_id_hour_new",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.id.member_hash_id",
+                "name": "base.id.member_hash_id",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.id.is_member_hash_id_day_new",
+                "name": "base.id.is_member_hash_id_day_new",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.id.is_member_hash_id_hour_new",
+                "name": "base.id.is_member_hash_id_hour_new",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.id.is_user_logged_in",
+                "name": "base.id.is_user_logged_in",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.id.user_type",
+                "name": "base.id.user_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.id.org_status",
+                "name": "base.id.org_status",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.id.user_profile.active_user.type",
+                "name": "base.id.user_profile.active_user.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.id.user_profile.active_user.is_pu",
+                "name": "base.id.user_profile.active_user.is_pu",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.id.user_profile.active_user.loyalty",
+                "name": "base.id.user_profile.active_user.loyalty",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.id.user_profile.active_user.frequency",
+                "name": "base.id.user_profile.active_user.frequency",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.id.user_profile.active_user.recency",
+                "name": "base.id.user_profile.active_user.recency",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.id.user_profile.active_user.loyalty2",
+                "name": "base.id.user_profile.active_user.loyalty2",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.product",
+                "name": "base.client.product",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.platform",
+                "name": "base.client.platform",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.source",
+                "name": "base.client.source",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.version_name",
+                "name": "base.client.version_name",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.version_code",
+                "name": "base.client.version_code",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.service",
+                "name": "base.client.service",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.user_agent",
+                "name": "base.client.user_agent",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.normalized_user_agent.agent_family",
+                "name": "base.client.normalized_user_agent.agent_family",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.normalized_user_agent.os_family",
+                "name": "base.client.normalized_user_agent.os_family",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.normalized_user_agent.device_family",
+                "name": "base.client.normalized_user_agent.device_family",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.normalized_user_agent.os_major",
+                "name": "base.client.normalized_user_agent.os_major",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.normalized_user_agent.os_minor",
+                "name": "base.client.normalized_user_agent.os_minor",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.update_source",
+                "name": "base.client.update_source",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.ad_source.type",
+                "name": "base.client.ad_source.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.ad_source.source",
+                "name": "base.client.ad_source.source",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.ad_source.pub_id",
+                "name": "base.client.ad_source.pub_id",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.ad_source.sub_pub_id",
+                "name": "base.client.ad_source.sub_pub_id",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.ad_source.utm.medium",
+                "name": "base.client.ad_source.utm.medium",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.ad_source.utm.source",
+                "name": "base.client.ad_source.utm.source",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.ad_source.utm.campaign",
+                "name": "base.client.ad_source.utm.campaign",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.ad_source.utm.content",
+                "name": "base.client.ad_source.utm.content",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.ad_source.utm.term",
+                "name": "base.client.ad_source.utm.term",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.ad_source.utm.division",
+                "name": "base.client.ad_source.utm.division",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.ad_source.utm.raw_term",
+                "name": "base.client.ad_source.utm.raw_term",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.is_app_view",
+                "name": "base.client.is_app_view",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.client.charge_type",
+                "name": "base.client.charge_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.time.server_timestamp",
+                "name": "base.time.server_timestamp",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.time.date",
+                "name": "base.time.date",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.time.hour",
+                "name": "base.time.hour",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.network.type",
+                "name": "base.network.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.network.mobile_network_type",
+                "name": "base.network.mobile_network_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.network.isp",
+                "name": "base.network.isp",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.network.country",
+                "name": "base.network.country",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.network.province",
+                "name": "base.network.province",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.network.city",
+                "name": "base.network.city",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.network.owner",
+                "name": "base.network.owner",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.launch.source",
+                "name": "base.launch.source",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.launch.view.action",
+                "name": "base.launch.view.action",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.launch.view.element",
+                "name": "base.launch.view.element",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.launch.view.path[0].module",
+                "name": "base.launch.view.path0.module",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.launch.view.path[0].index",
+                "name": "base.launch.view.path0.index",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.launch.view.name",
+                "name": "base.launch.view.name",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.launch.view.element_name",
+                "name": "base.launch.view.element_name",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.launch.package_name",
+                "name": "base.launch.package_name",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.launch.link",
+                "name": "base.launch.link",
+                "type": "path"
+              },
+              {
+                "expr": "$.base.experiment.feature_kv",
+                "name": "base.experiment.feature_kv",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.intent_event.action",
+                "name": "detail.intent_event.action",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.url",
+                "name": "detail.view.url",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.action",
+                "name": "detail.view.action",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.event_name",
+                "name": "detail.view.event_name",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.element",
+                "name": "detail.view.element",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.path[0].module",
+                "name": "detail.view.path0.module",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.path[0].module_name",
+                "name": "detail.view.path0.module_name",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.path[1].module_name",
+                "name": "detail.view.path1.module_name",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.path[2].module_name",
+                "name": "detail.view.path2.module_name",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.path[0].index",
+                "name": "detail.view.path0.index",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.path[0].is_ad",
+                "name": "detail.view.path0.is_ad",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.path[1].module",
+                "name": "detail.view.path1.module",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.path[1].index",
+                "name": "detail.view.path1.index",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.path[1].is_ad",
+                "name": "detail.view.path1.is_ad",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.path[2].module",
+                "name": "detail.view.path2.module",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.name",
+                "name": "detail.view.name",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.element_name",
+                "name": "detail.view.element_name",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.is_intent",
+                "name": "detail.view.is_intent",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.view.extracted_url.scheme",
+                "type": "path",
+                "name": "detail.view.extracted_url.scheme"
+              },
+              {
+                "expr": "$.detail.view.extracted_url.host",
+                "type": "path",
+                "name": "detail.view.extracted_url.host"
+              },
+              {
+                "expr": "$.detail.view.extracted_url.path",
+                "type": "path",
+                "name": "detail.view.extracted_url.path"
+              },
+              {
+                "expr": "$.detail.last_event.action",
+                "name": "detail.last_event.action",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.last_event.element",
+                "name": "detail.last_event.element",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.last_event.element_name",
+                "name": "detail.last_event.element_name",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.last_event.path[0].module",
+                "name": "detail.last_event.path0.module",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.last_event.path[0].module_name",
+                "name": "detail.last_event.path0.module_name",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.last_event.path[0].is_ad",
+                "name": "detail.last_event.path0.is_ad",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.last_event.name",
+                "name": "detail.last_event.name",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.last_event.is_intent",
+                "name": "detail.last_event.is_intent",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.referrer_event.url",
+                "name": "detail.referrer_event.url",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.referrer_event.extracted_url.scheme",
+                "name": "detail.referrer_event.extracted_url.scheme",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.referrer_event.extracted_url.host",
+                "name": "detail.referrer_event.extracted_url.host",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.referrer_event.extracted_url.path",
+                "name": "detail.referrer_event.extracted_url.path",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.referrer_event.action",
+                "name": "detail.referrer_event.action",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.referrer_event.element",
+                "name": "detail.referrer_event.element",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.referrer_event.element_name",
+                "name": "detail.referrer_event.element_name",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.referrer_event.path[0].module",
+                "name": "detail.referrer_event.path0.module",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.referrer_event.path[0].module_name",
+                "name": "detail.referrer_event.path0.module_name",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.referrer_event.path[0].is_ad",
+                "name": "detail.referrer_event.path0.is_ad",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.referrer_event.name",
+                "name": "detail.referrer_event.name",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.referrer_event.is_intent",
+                "name": "detail.referrer_event.is_intent",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.is_active",
+                "name": "detail.is_active",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.is_hybrid",
+                "name": "detail.is_hybrid",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.hybrid_referrer.url",
+                "name": "detail.hybrid_referrer.url",
+                "type": "path"
+              },
+              {
+                "expr": "$.detail.referrer_url",
+                "name": "detail.referrer_url",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.device.os_str",
+                "name": "extra.device.os_str",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.device.os_type",
+                "name": "extra.device.os_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.device.os_version",
+                "name": "extra.device.os_version",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.device.sdk_level",
+                "name": "extra.device.sdk_level",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.device.brand",
+                "name": "extra.device.brand",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.device.screen",
+                "name": "extra.device.screen",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.device.model",
+                "name": "extra.device.model",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.account.type",
+                "name": "extra.account.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.content.id",
+                "name": "extra.content.id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.content.type",
+                "name": "extra.content.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.content.parent_token",
+                "name": "extra.content.parent_token",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.content.token",
+                "name": "extra.content.token",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.content.is_ad",
+                "name": "extra.content.is_ad",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.search.raw_query",
+                "name": "extra.search.raw_query",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.search.restrict_type",
+                "name": "extra.search.restrict_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.search.preset_query",
+                "type": "path",
+                "name": "extra.search.preset_query"
+              },
+              {
+                "expr": "$.extra.search.search_source",
+                "type": "path",
+                "name": "extra.search.search_source"
+              },
+              {
+                "expr": "$.extra.status.type",
+                "name": "extra.status.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.status.result",
+                "name": "extra.status.result",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.status.event.action",
+                "name": "extra.status.event.action",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.status.event.element_name",
+                "name": "extra.status.event.element_name",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.status.event.name",
+                "name": "extra.status.event.name",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.status.event.element",
+                "name": "extra.status.event.element",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.status.event.path[0].module",
+                "name": "extra.status.event.path0.module",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.status.error_msg",
+                "name": "extra.status.error_msg",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[0].list.type",
+                "name": "extra.module0.list.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[1].list.type",
+                "name": "extra.module1.list.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[0].list.card.content[0].type",
+                "name": "extra.module0.list.card.content0.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[0].card.content[0].ad_info.ad_id",
+                "name": "extra.module0.card.content0.ad_info.ad_id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[0].card.content[0].ad_info.ad_zone_id",
+                "name": "extra.module0.card.content0.ad_info.ad_zone_id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[0].card.content[0].id",
+                "name": "extra.module0.card.content0.id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[0].card.content[0].type",
+                "name": "extra.module0.card.content0.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[0].card.content[0].sub_type",
+                "name": "extra.module0.card.content0.sub_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[0].card.content[0].is_playable",
+                "name": "extra.module0.card.content0.is_playable",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[0].card.content[0].video_id",
+                "name": "extra.module0.card.content0.video_id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[0].card.card_type",
+                "name": "extra.module0.card.card_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[0].card.feed_source.actor_type",
+                "name": "extra.module0.card.feed_source.actor_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[0].card.feed_source.action_type",
+                "name": "extra.module0.card.feed_source.action_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[0].card.has_image",
+                "name": "extra.module0.card.has_image",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[0].card.has_video",
+                "name": "extra.module0.card.has_video",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[1].card.content[0].id",
+                "name": "extra.module1.card.content0.id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[1].card.content[0].type",
+                "name": "extra.module1.card.content0.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.module[2].list.type",
+                "name": "extra.module2.list.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.link.url",
+                "name": "extra.link.url",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.link.anchor",
+                "name": "extra.link.anchor",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.notification.id",
+                "name": "extra.notification.id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.notification.action",
+                "name": "extra.notification.action",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.payment.type",
+                "name": "extra.payment.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.payment.currency_type",
+                "name": "extra.payment.currency_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.share.type",
+                "name": "extra.share.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.share.package_name",
+                "name": "extra.share.package_name",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.vertical.type",
+                "name": "extra.vertical.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.vertical.referrer_type",
+                "name": "extra.vertical.referrer_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.vertical.referrer_host",
+                "name": "extra.vertical.referrer_host",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.vertical.sub_type",
+                "type": "path",
+                "name": "extra.vertical.sub_type"
+              },
+              {
+                "expr": "$.extra.play.video_bitrate",
+                "name": "extra.play.video_bitrate",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.play.video_bytes",
+                "name": "extra.play.video_bytes",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.play.video_resolution",
+                "name": "extra.play.video_resolution",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.play.video_quality",
+                "name": "extra.play.video_quality",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.play.screen_direction",
+                "name": "extra.play.screen_direction",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.play.upload_time",
+                "name": "extra.play.upload_time",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.play.transcode_time",
+                "name": "extra.play.transcode_time",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.play.video_load_time",
+                "name": "extra.play.video_load_time",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.report.id",
+                "name": "extra.report.id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.utm.medium",
+                "name": "extra.utm.medium",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.utm.source",
+                "name": "extra.utm.source",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.utm.campaign",
+                "name": "extra.utm.campaign",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.utm.content",
+                "name": "extra.utm.content",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.utm.term",
+                "name": "extra.utm.term",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.utm.division",
+                "name": "extra.utm.division",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.utm.raw_term",
+                "name": "extra.utm.raw_term",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.feed_attached_info.feed_type",
+                "name": "extra.attached_info.feed_attached_info.feed_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.feed_attached_info.sources[0].source_type",
+                "name": "extra.attached_info.feed_attached_info.sources0.source_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.feed_attached_info.video_id",
+                "name": "extra.attached_info.feed_attached_info.video_id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.feed_attached_info.content_type",
+                "name": "extra.attached_info.feed_attached_info.content_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.feed_attached_info.content_id",
+                "name": "extra.attached_info.feed_attached_info.content_id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.feed_attached_info.source_type",
+                "name": "extra.attached_info.feed_attached_info.source_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.pin_feed_attached_info.feed_type",
+                "name": "extra.attached_info.pin_feed_attached_info.feed_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.pin_feed_attached_info.pin[0].id",
+                "name": "extra.attached_info.pin_feed_attached_info.pin0.id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.pin_feed_attached_info.pin[0].has_text",
+                "name": "extra.attached_info.pin_feed_attached_info.pin0.has_text",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.pin_feed_attached_info.pin[0].has_link",
+                "name": "extra.attached_info.pin_feed_attached_info.pin0.has_link",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.pin_feed_attached_info.pin[0].has_image",
+                "name": "extra.attached_info.pin_feed_attached_info.pin0.has_image",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.pin_feed_attached_info.pin[0].has_video",
+                "name": "extra.attached_info.pin_feed_attached_info.pin0.has_video",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.pin_feed_attached_info.pin[0].link_type",
+                "name": "extra.attached_info.pin_feed_attached_info.pin0.link_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.pin_feed_attached_info.pin[0].is_original",
+                "name": "extra.attached_info.pin_feed_attached_info.pin0.is_original",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.pin_feed_attached_info.pin[0].publish_date",
+                "name": "extra.attached_info.pin_feed_attached_info.pin0.publish_date",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.pin_feed_attached_info.pin[0].video_id",
+                "name": "extra.attached_info.pin_feed_attached_info.pin0.video_id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.attached_info.pin_feed_attached_info.pin[0].author_hash_id",
+                "name": "extra.attached_info.pin_feed_attached_info.pin0.author_hash_id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.message.type",
+                "name": "extra.message.type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.personalized_push_log.id",
+                "name": "extra.personalized_push_log.id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.personalized_push_log.content_id",
+                "name": "extra.personalized_push_log.content_id",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.personalized_push_log.content_type",
+                "name": "extra.personalized_push_log.content_type",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.personalized_push_log.content_title",
+                "name": "extra.personalized_push_log.content_title",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.personalized_push_log.push_title",
+                "name": "extra.personalized_push_log.push_title",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.personalized_push_log.suc_member_count",
+                "name": "extra.personalized_push_log.suc_member_count",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.personalized_push_log.suc_device_count",
+                "name": "extra.personalized_push_log.suc_device_count",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.personalized_push_log.failed_reason",
+                "name": "extra.personalized_push_log.failed_reason",
+                "type": "path"
+              },
+              {
+                "expr": "$.extra.personalized_push_log.push_delay_time",
+                "name": "extra.personalized_push_log.push_delay_time",
+                "type": "path"
+              }
+            ],
+            "useFieldDiscovery": false
+          },
+          "format": "json",
+          "timestampSpec": {
+            "column": "base.time.server_timestamp",
+            "format": "millis"
+          }
+        },
+        "type": "parquet_json_string"
+      }
+    },
+    "ioConfig": {
+      "inputSpec": {
+        "inputFormat": "io.druid.data.input.parquet.json.JsonParquetInputFormat",
+        "paths": "/data/za2/hivelog/za-log-server.data.zhihu/androidphone/20170519/1400",
+        "type": "static"
+      },
+      "type": "hadoop",
+      "segmentOutputPath": "/tmp/workingPath"
+    },
+    "tuningConfig": {
+      "buildV9Directly": true,
+      "ignoreInvalidRows": true,
+      "workingPath": "/tmp/workingPath",
+      "jobProperties": {
+        "mapreduce.job.classloader": "true",
+        "mapreduce.job.classloader.system.classes": "-javax.validation.,java.,javax.,org.apache.commons.logging.,org.apache.log4j.,org.apache.hadoop.,org.xerial.snappy."
+      },
+      "numBackgroundPersistThreads": 1,
+      "partitionsSpec": {
+        "assumeGrouped": false,
+        "maxPartitionSize": 6500000,
+        "numShards": 75,
+        "type": "hashed"
+      },
+      "type": "hadoop"
+    }
+  },
+  "type": "index_hadoop"
+}

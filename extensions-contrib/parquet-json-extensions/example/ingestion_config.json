@@ -1,0 +1,112 @@
+{
+  "type" : "index_hadoop",
+  "id" : "index_hadoop_session_test_2017-12-05T02:37:24.978Z",
+  "spec" : {
+    "dataSchema" : {
+      "dataSource" : "session_test",
+      "parser" : {
+        "type" : "parquet_json_string",
+        "parseSpec" : {
+          "format" : "json",
+          "timestampSpec" : {
+            "column" : "start_timestamp",
+            "format" : "millis",
+            "missingValue" : 0
+          },
+          "dimensionsSpec" : {
+            "dimensions" : [ "action", "is_bounce", "landing_url", "client_product"],
+            "dimensionExclusions" : null,
+            "spatialDimensions" : null
+          },
+          "flattenSpec" : {
+            "fields" : [
+              {
+                "expr" : "$.client.product",
+                "type" : "path",
+                "name" : "client_product"
+              },
+              {
+                "expr": "$.entry.log[0].detail.view.action",
+                "type": "path",
+                "name": "action"
+              }
+            ]
+          }
+        }
+      },
+      "metricsSpec" : [ {
+        "type" : "longSum",
+        "name" : "url_num_sum",
+        "fieldName" : "url_num"
+      } ],
+      "granularitySpec" : {
+        "type" : "uniform",
+        "segmentGranularity" : "HOUR",
+        "queryGranularity" : {
+          "type" : "duration",
+          "duration" : 60000,
+          "origin" : "1970-01-01T00:00:00.000Z"
+        },
+        "rollup" : true,
+        "intervals" : [ "2017-05-07T00:00:00.000Z/2017-05-09T00:00:00.000Z" ]
+      }
+    },
+    "ioConfig" : {
+      "type" : "hadoop",
+      "inputSpec" : {
+        "type" : "static",
+        "paths" : "/data/za2/session/data/za-session.data.zhihu/p_date=20170508/p_platform=androidphone",
+        "inputFormat" : "io.druid.data.input.parquet.json.JsonParquetInputFormat"
+      },
+      "metadataUpdateSpec" : null,
+      "segmentOutputPath": "/tmp/segments"
+    },
+    "tuningConfig" : {
+      "type" : "hadoop",
+      "workingPath" : "tmp/working_path",
+      "version" : "2017-12-05T02:37:24.978Z",
+      "partitionsSpec" : {
+        "type" : "hashed",
+        "targetPartitionSize" : -1,
+        "maxPartitionSize" : 0,
+        "assumeGrouped" : false,
+        "numShards" : 1,
+        "partitionDimensions" : [ ]
+      },
+      "shardSpecs" : { },
+      "indexSpec" : {
+        "bitmap" : {
+          "type" : "concise"
+        },
+        "dimensionCompression" : "lz4",
+        "metricCompression" : "lz4",
+        "longEncoding" : "longs"
+      },
+      "maxRowsInMemory" : 75000,
+      "leaveIntermediate" : false,
+      "cleanupOnFailure" : true,
+      "overwriteFiles" : false,
+      "ignoreInvalidRows" : true,
+      "jobProperties" : {
+        "mapreduce.job.classloader.system.classes" : "-javax.validation.,java.,javax.,org.apache.commons.logging.,org.apache.log4j.,org.apache.hadoop.,org.xerial.snappy.",
+        "mapreduce.job.classloader" : "true",
+        "parquet.json.fetch_primitive_fields" : "true"
+      },
+      "combineText" : false,
+      "useCombiner" : false,
+      "buildV9Directly" : true,
+      "numBackgroundPersistThreads" : 1,
+      "forceExtendableShardSpecs" : false
+    },
+    "uniqueId" : "f9316f5dfbb64439ab73321b3380e8fa"
+  },
+  "hadoopDependencyCoordinates" : [ "org.apache.hadoop:hadoop-client:2.3.0" ],
+  "classpathPrefix" : null,
+  "context" : null,
+  "groupId" : "index_hadoop_session_test_2017-12-05T02:37:24.978Z",
+  "dataSource" : "session_test",
+  "resource" : {
+    "availabilityGroup" : "index_hadoop_session_test_2017-12-05T02:37:24.978Z",
+    "requiredCapacity" : 1
+  }
+}

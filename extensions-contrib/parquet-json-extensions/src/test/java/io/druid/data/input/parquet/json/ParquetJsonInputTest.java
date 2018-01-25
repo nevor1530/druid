@@ -58,9 +58,9 @@ public class ParquetJsonInputTest {
      */
     @Test
     public void testListType() throws IOException, InterruptedException {
-//        Job job = Job.getInstance(new Configuration());
-//        ObjectNode data = getFirstRecord(job, "example/000000_0");
-//        System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(data));
+        Job job = Job.getInstance(new Configuration());
+        ObjectNode data = getFirstRecord(job, "example/000000_0");
+        assertEquals("hello:world", data.get("col1").get(0).asText());
     }
 
     private ObjectNode getFirstRecord(Job job, String parquetPath) throws IOException, InterruptedException {

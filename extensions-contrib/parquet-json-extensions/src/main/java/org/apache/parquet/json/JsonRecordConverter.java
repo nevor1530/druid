@@ -1,12 +1,15 @@
 package org.apache.parquet.json;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.parquet.io.api.Binary;
 import org.apache.parquet.io.api.Converter;
 import org.apache.parquet.io.api.GroupConverter;
 import org.apache.parquet.io.api.PrimitiveConverter;
 import org.apache.parquet.schema.GroupType;
+import org.apache.parquet.schema.OriginalType;
 import org.apache.parquet.schema.PrimitiveType;
 import org.apache.parquet.schema.Type;
 
@@ -20,10 +23,15 @@ public class JsonRecordConverter extends GroupConverter {
     private ObjectNode currentObj = null;
     private int fieldIndex = 0;
     private String fieldName = null;
+    private boolean isList = false;
 
     public JsonRecordConverter(ParentValueContainer pvc, GroupType parquetSchema) {
         this.pvc = pvc;
         this.parquetSchema = parquetSchema;
+        if (parquetSchema.getOriginalType() == OriginalType.LIST) {
+            isList = true;
+        }
+        // TODO map
 
         om = new ObjectMapper();
         int count = parquetSchema.getFieldCount();
@@ -46,7 +54,7 @@ public class JsonRecordConverter extends GroupConverter {
     public Converter newConverter(final Type type) {
         final String childName = type.getName();
         ParentValueContainer parentValueContainer = null;
-        if (type.isRepetition(Type.Repetition.REPEATED)) {
+        if (type.isRepetition(Type.Repetition.REPEATED) || type.getOriginalType() == OriginalType.LIST) {
             parentValueContainer = new ParentValueContainer() {
                 @Override
                 public void add(Object value) {
@@ -81,10 +89,20 @@ public class JsonRecordConverter extends GroupConverter {
     @Override
     public void end() {
         if (pvc != null) {
-            if (currentObj.size() == 0) {
-                pvc.add(null);
+            if (isList) {
+                if (currentObj.get("bag") != null && ((ArrayNode) currentObj.get("bag")).size() > 0) {
+                    for(JsonNode n: ((ArrayNode) currentObj.get("bag"))) {
+                        pvc.add(n.get("array_element"));
+                    }
+                } else {
+                    pvc.add(null);
+                }
             } else {
-                pvc.add(currentObj);
+                if (currentObj.size() == 0) {
+                    pvc.add(null);
+                } else {
+                    pvc.add(currentObj);
+                }
             }
         }
     }

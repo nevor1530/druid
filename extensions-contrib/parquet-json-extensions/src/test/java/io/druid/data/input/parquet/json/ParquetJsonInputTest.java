@@ -1,5 +1,6 @@
 package io.druid.data.input.parquet.json;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.druid.indexer.HadoopDruidIndexerConfig;
 import org.apache.hadoop.conf.Configuration;
@@ -47,8 +48,19 @@ public class ParquetJsonInputTest {
         Job job = Job.getInstance(new Configuration());
         config.intoConfiguration(job);
         ObjectNode data = getFirstRecord(job, "example/zalog.snappy.parquet");
-        int i = 1;
         assertEquals(false, data.get("detail").get("view").get("is_intent").asBoolean());
+    }
+
+    /**
+     * 测试 Parquet LIST 类型的数据读取，因为暂时没有小份的测试数据文件，测试完去掉了
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    @Test
+    public void testListType() throws IOException, InterruptedException {
+//        Job job = Job.getInstance(new Configuration());
+//        ObjectNode data = getFirstRecord(job, "example/000000_0");
+//        System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(data));
     }
 
     private ObjectNode getFirstRecord(Job job, String parquetPath) throws IOException, InterruptedException {

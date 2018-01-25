@@ -92,6 +92,11 @@ public class JsonParquetReadSupport extends ReadSupport<ObjectNode> {
 
         String name = fullSchema.getName();
 
+        // 如果没有指定 config，则读取全量的 Schema 和 数据
+        if (context.getConfiguration().get("druid.indexer.config") == null) {
+            return fullSchema;
+        }
+
         HadoopDruidIndexerConfig config = HadoopDruidIndexerConfig.fromConfiguration(context.getConfiguration());
         Set<String> requiredPaths = fetchRequriedPaths(config);
         // 解析成树状
